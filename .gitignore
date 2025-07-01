@@ -61,3 +61,8 @@ testfixtures_shared/
 
 # These are generated from .ci/jobs.t
 .ci/jobs/
+
+### BROKK'S CONFIGURATION ###
+.brokk/**
+!.brokk/style.md
+!.brokk/project.properties
