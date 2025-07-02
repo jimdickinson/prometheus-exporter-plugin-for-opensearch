@@ -17,15 +17,14 @@
 
 package org.opensearch.plugin.bwc;
 
-import org.junit.Assert;
-import org.opensearch.Version;
-import org.opensearch.common.settings.Settings;
-import org.opensearch.test.rest.OpenSearchRestTestCase;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.junit.Assert;
+import org.opensearch.Version;
+import org.opensearch.common.settings.Settings;
+import org.opensearch.test.rest.OpenSearchRestTestCase;
 
 /**
  * IMPORTANT: When upgrading to a new version of OpenSearch this test has to be updated
@@ -34,8 +33,8 @@ import java.util.stream.Collectors;
  */
 public class PluginBackwardsCompatibilityIT extends OpenSearchRestTestCase {
 
-    public static final Version BWCVersion = Version.V_2_17_1;
-    public static final Version NewVersion = Version.V_2_18_0;
+    public static final Version BWCVersion = Version.V_2_18_0;
+    public static final Version NewVersion = Version.V_3_0_0;
 
     private static final ClusterType CLUSTER_TYPE = ClusterType.parse(System.getProperty("tests.rest.bwcsuite"));
     private static final String CLUSTER_NAME = System.getProperty("tests.clustername");
