@@ -50,13 +50,7 @@ public class PrometheusPluginIT extends OpenSearchIntegTestCase {
      * Plugin must be installed on every cluster node.
      */
     public void testPluginInstalled() {
-        NodesInfoResponse response = client()
-            .admin()
-            .cluster()
-            .prepareNodesInfo()
-            .clear()
-            .all()
-            .get();
+        NodesInfoResponse response = client().admin().cluster().prepareNodesInfo().clear().all().get();
         assertEquals(0, response.failures().size());
         assertFalse(response.getNodes().isEmpty());
         for (NodeInfo ni : response.getNodes()) {
@@ -67,32 +61,23 @@ public class PrometheusPluginIT extends OpenSearchIntegTestCase {
                     .getInfo(PluginsAndModules.class)
                     .getPluginInfos()
                     .stream()
-                    .filter(pluginInfo ->
-                        pluginInfo
-                            .getClassname()
-                            .endsWith("PrometheusExporterPlugin")
-                    )
+                    .filter(pluginInfo -> pluginInfo.getClassname().endsWith("PrometheusExporterPlugin"))
                     .count()
             );
         }
     }
 
-    public void testPrometheusClientResponse()
-        throws IOException, ParseException {
+    public void testPrometheusClientResponse() throws IOException {
         RestClient rc = getRestClient();
         logClusterState();
-        Response response = rc.performRequest(
-            new Request("GET", "_prometheus/metrics")
-        );
+        Response response = rc.performRequest(new Request("GET", "_prometheus/metrics"));
         assertEquals(200, response.getStatusLine().getStatusCode());
-        assertEquals(
-            "text/plain; charset=UTF-8",
-            response.getEntity().getContentType() //getValue()
-        );
-        String body = EntityUtils.toString(
-            response.getEntity(),
-            StandardCharsets.UTF_8
-        );
-        assertTrue(body.startsWith("# HELP"));
+        assertEquals("text/plain; charset=UTF-8", response.getEntity().getContentType());
+        try {
+            String body = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            assertTrue(body.startsWith("# HELP"));
+        } catch (ParseException ex) {
+            fail("failed with ParseException " + ex.getMessage());
+        }
     }
 }
