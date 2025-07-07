@@ -3,7 +3,7 @@ name: Build and Release
 on:
   push:
     tags:
-      - 'v*'  # Trigger bei Tags, die mit "v" beginnen
+      - "v*" # Trigger on tags that start with 'v'
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: '17'
+          java-version: "21"
 
       # Build the project
       - name: Build project
