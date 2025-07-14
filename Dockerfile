@@ -11,7 +11,7 @@ WORKDIR /plugin-build
 COPY . .
 
 # Build the plugin using Gradle
-RUN ./gradlew clean build -x test -x integTest -x yamlRestTest
+RUN ./gradlew clean build -x integTest -x yamlRestTest
 
 # Verify the built artifacts
 RUN ls -la build/distributions/

@@ -1,6 +1,6 @@
 version: '3.8'
 
-# Note: The Dockerfile skips all tests (test, integTest, yamlRestTest) to avoid issues with OpenSearch refusing to run as root
+# Note: The Dockerfile runs unit tests but skips integration tests (integTest, yamlRestTest) to avoid issues with OpenSearch refusing to run as root
 
 services:
   # Service to build the plugin

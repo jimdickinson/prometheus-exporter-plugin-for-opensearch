@@ -67,5 +67,5 @@ RUN rm /tmp/prometheus-exporter-*.zip
 ## Notes
 
 - The plugin version must match the OpenSearch version (major.minor.patch)
-- The Docker build skips all tests (test, integTest, yamlRestTest) to speed up the build process and avoid issues with OpenSearch refusing to run as root
+- The Docker build runs unit tests but skips integration tests (integTest, yamlRestTest) to avoid issues with OpenSearch refusing to run as root
 - For production use, consider pinning to specific versions

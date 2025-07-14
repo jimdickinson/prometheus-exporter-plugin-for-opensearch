@@ -16,7 +16,7 @@ echo ""
 # Build plugin image
 build_plugin() {
     echo "Building plugin image..."
-    echo "Note: All tests (test, integTest, yamlRestTest) are skipped to avoid issues with OpenSearch refusing to run as root"
+    echo "Note: Unit tests will run, but integration tests (integTest, yamlRestTest) are skipped to avoid issues with OpenSearch refusing to run as root"
     docker build -t prometheus-exporter-plugin:${PLUGIN_VERSION} .
     echo "Build complete. Image: prometheus-exporter-plugin:${PLUGIN_VERSION}"
 }
