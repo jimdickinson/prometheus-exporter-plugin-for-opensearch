@@ -66,6 +66,11 @@ show_help() {
     echo "  PLUGIN_VERSION             Plugin version (default: 3.0.0.0)"
     echo ""
     echo "Note: The build process uses JDK 21 as required by OpenSearch 3.0.0+"
+    echo ""
+    echo "GitHub Actions:"
+    echo "  For automated builds and publishing to GitHub Container Registry,"
+    echo "  see the workflow at .github/workflows/docker-publish.yml"
+    echo "  and the documentation in DOCKER.md"
 }
 
 # Process command line argument
