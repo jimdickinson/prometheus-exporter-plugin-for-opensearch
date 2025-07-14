@@ -1,0 +1,29 @@
+# Example Dockerfile for creating an OpenSearch image with the Prometheus Exporter plugin pre-installed
+# Plugin is built with JDK 21
+
+# Define build arguments for versions
+ARG OPENSEARCH_VERSION=3.0.0
+ARG PLUGIN_VERSION=3.0.0.0
+
+# First stage - use the plugin builder image
+FROM prometheus-exporter-plugin:${PLUGIN_VERSION} AS plugin
+
+# Second stage - install into OpenSearch
+FROM opensearchproject/opensearch:${OPENSEARCH_VERSION}
+
+# Copy the plugin ZIP from the builder image
+COPY --from=plugin /plugins/prometheus-exporter/prometheus-exporter-*.zip /tmp/
+
+# Install the plugin and remove the ZIP file
+RUN bin/opensearch-plugin install file:///tmp/prometheus-exporter-*.zip && \
+    rm /tmp/prometheus-exporter-*.zip
+
+# Add health check
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD curl -s -f http://localhost:9200/_cat/health || exit 1
+
+# Expose the ports
+EXPOSE 9200 9300 9600
+
+# Set OpenSearch as the entrypoint
+ENTRYPOINT ["opensearch"]

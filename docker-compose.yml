@@ -1,0 +1,49 @@
+version: '3.8'
+
+# Note: The Dockerfile skips all tests (test, integTest, yamlRestTest) to avoid issues with OpenSearch refusing to run as root
+
+services:
+  # Service to build the plugin
+  plugin-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: prometheus-exporter-plugin:${PLUGIN_VERSION:-3.0.0.0}
+    volumes:
+      - plugin-data:/plugins
+  
+  # OpenSearch service that will use the plugin
+  opensearch:
+    image: opensearchproject/opensearch:${OPENSEARCH_VERSION:-3.0.0}
+    depends_on:
+      - plugin-builder
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - plugin-data:/tmp/plugins
+    command: >
+      bash -c '
+        if [ -n "$$(ls -A /tmp/plugins/prometheus-exporter/)" ]; then
+          echo "Installing prometheus-exporter plugin...";
+          bin/opensearch-plugin install file:///tmp/plugins/prometheus-exporter/prometheus-exporter-*.zip;
+          echo "Starting OpenSearch...";
+          exec opensearch;
+        else
+          echo "Error: Plugin ZIP not found in mounted volume";
+          exit 1;
+        fi'
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+
+volumes:
+  plugin-data:
