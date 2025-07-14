@@ -11,9 +11,10 @@ This workflow builds and publishes the plugin Docker image to GitHub Container R
 #### Features
 
 - Manually triggered workflow (via workflow_dispatch)
+- Automatically triggered on pushes to the `os3` branch
 - Builds the plugin Docker image using JDK 21
 - Publishes the image to GHCR with appropriate version tags
-- Optionally tags the image as 'latest'
+- Optionally tags the image as 'latest' (only for manual triggers)
 - Uses GitHub Actions caching to speed up builds
 
 #### Configuration

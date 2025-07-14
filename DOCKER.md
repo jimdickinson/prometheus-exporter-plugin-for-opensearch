@@ -76,15 +76,21 @@ This project includes a GitHub Actions workflow that can build and publish the p
 
 ### Publishing to GHCR
 
-To publish a new version to GHCR:
+The Docker image can be published to GHCR in two ways:
 
-1. Go to the repository on GitHub
-2. Navigate to Actions > Build and Push Plugin Docker Image
-3. Click "Run workflow"
-4. Configure the workflow run:
-   - Optionally specify a custom version tag (defaults to version in gradle.properties)
-   - Choose whether to also tag the image as 'latest'
-5. Click "Run workflow"
+1. **Manual Trigger**:
+   - Go to the repository on GitHub
+   - Navigate to Actions > Build and Push Plugin Docker Image
+   - Click "Run workflow"
+   - Configure the workflow run:
+     - Optionally specify a custom version tag (defaults to version in gradle.properties)
+     - Choose whether to also tag the image as 'latest'
+   - Click "Run workflow"
+
+2. **Automatic Trigger**:
+   - The workflow automatically runs when changes are pushed to the `os3` branch
+   - The image is tagged with the version from gradle.properties
+   - The image is not tagged as 'latest' by default
 
 The image will be published to `ghcr.io/OWNER/prometheus-exporter-plugin:VERSION` where:
 - `OWNER` is the GitHub username or organization that owns the repository
