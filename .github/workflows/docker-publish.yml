@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       tag_version:
-        description: 'Version tag for the Docker image (default is version from gradle.properties)'
+        description: "Version tag for the Docker image (default is version from gradle.properties)"
         required: false
         type: string
       publish_latest:
-        description: 'Also publish as latest tag?'
+        description: "Also publish as latest tag?"
         required: false
         type: boolean
         default: false
@@ -30,9 +30,9 @@ jobs:
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'gradle'
+          distribution: "temurin"
+          java-version: "21"
+          cache: "gradle"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -40,7 +40,7 @@ jobs:
       - name: Get version from gradle.properties
         id: get_version
         run: |
-          VERSION=$(grep -w "version" gradle.properties | cut -d"=" -f2 | tr -d " ")
+          VERSION=$(grep -w "version" gradle.properties | fgrep -v '#' | cut -d"=" -f2 | tr -d " ")
           echo "PLUGIN_VERSION=$VERSION" >> $GITHUB_ENV
           echo "Plugin version from gradle.properties: $VERSION"
 
